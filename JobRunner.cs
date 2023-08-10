@@ -7,20 +7,20 @@ namespace ConsoleJobRunner;
 public class JobRunner : BackgroundService
 {
     private readonly IHostApplicationLifetime hostLifetime;
-    private readonly IConfiguration config;
+    private readonly IOptions<AppOptions> options;
 
     public JobRunner(
         IHostApplicationLifetime hostLifetime,
-        IConfiguration config)
+        IOptions<AppOptions> options)
     {
         this.hostLifetime = hostLifetime;
-        this.config = config;
+        this.options = options;
     }
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Console.WriteLine("JobRunner enter");
-        Console.WriteLine($"Running {config["jobname"]}");
+        Console.WriteLine($"Running [{options.Value.JobName}]");
         Console.WriteLine("Job run complete.");
 
         hostLifetime.StopApplication();
